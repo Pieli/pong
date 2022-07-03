@@ -6,6 +6,7 @@
 #include <SDL2/SDL_scancode.h>
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_timer.h>
+#include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_video.h>
 
 #include <stdio.h>
@@ -174,6 +175,42 @@ render()
 
   // for multiple rendering
   SDL_RenderPresent(game.renderer);
+}
+
+// Todo: incorporate
+static void
+cleanup(int exitcode)
+{
+  TTF_Quit();
+  SDL_Quit();
+  exit(exitcode);
+}
+
+void
+renderFont()
+{
+  if (TTF_Init() != 0) {
+    SDL_Log("Couldn't initialize TTF: %s\n", SDL_GetError());
+    SDL_Quit();
+    return;
+  }
+
+  const char filepath[] = "Test test";
+
+  // pointsize
+  int ptsize = 18;
+  TTF_Font* font;
+  SDL_Surface* test;
+
+  font = TTF_OpenFont(argv[0], ptsize);
+
+  if (font == NULL) {
+    SDL_Log("Couldn't load %d pt font from %s: %s\n",
+            ptsize,
+            filepath,
+            SDL_GetError());
+    cleanup(2);
+  }
 }
 
 void
