@@ -3,3 +3,5 @@ pong
 *.desktop
 *.vim
 *.xcf
+
+showfont*
