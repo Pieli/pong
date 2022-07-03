@@ -14,6 +14,7 @@
 #include <time.h>
 
 #include "ball.h"
+#include "font.h"
 #include "game.h"
 #include "player.h"
 
@@ -37,6 +38,9 @@ Player rightPlayer;
 
 const int PLAYER_SPEED = 10;
 
+// TODO: move Scenesome where else
+Scene scene;
+
 int
 main(int argc, char* args[])
 {
@@ -44,6 +48,7 @@ main(int argc, char* args[])
   float elapsedMS;
 
   init();
+  fontUpdate("Hello my friend", &scene);
 
   // TODO rewrite to own function, called when point is scored
   // inital positioning
@@ -88,6 +93,7 @@ void
 init()
 {
   gameInit();
+  fontInit();
   playerInit(&leftPlayer);
   playerInit(&rightPlayer);
   ballInit();
@@ -96,6 +102,7 @@ init()
 void
 clean()
 {
+  fontClean(&scene);
   playerClean(&leftPlayer);
   playerClean(&rightPlayer);
   ballClean();
@@ -109,7 +116,6 @@ logicPlayer()
   if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
     if ((ball.drect.y >= (rightPlayer.drect.y - ball.drect.h)) &&
         (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
-      SDL_Log("test");
       ball.x_direction *= -1;
       return;
     }
@@ -119,7 +125,6 @@ logicPlayer()
   if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
     if ((ball.drect.y >= (leftPlayer.drect.y - ball.drect.h)) &&
         (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
-      SDL_Log("test 2");
       ball.x_direction *= -1;
       return;
     }
@@ -171,46 +176,11 @@ render()
   gameRender();
   playerRender(&leftPlayer);
   playerRender(&rightPlayer);
+  fontRender(&scene);
   ballRender();
 
   // for multiple rendering
   SDL_RenderPresent(game.renderer);
-}
-
-// Todo: incorporate
-static void
-cleanup(int exitcode)
-{
-  TTF_Quit();
-  SDL_Quit();
-  exit(exitcode);
-}
-
-void
-renderFont()
-{
-  if (TTF_Init() != 0) {
-    SDL_Log("Couldn't initialize TTF: %s\n", SDL_GetError());
-    SDL_Quit();
-    return;
-  }
-
-  const char filepath[] = "Test test";
-
-  // pointsize
-  int ptsize = 18;
-  TTF_Font* font;
-  SDL_Surface* test;
-
-  font = TTF_OpenFont(argv[0], ptsize);
-
-  if (font == NULL) {
-    SDL_Log("Couldn't load %d pt font from %s: %s\n",
-            ptsize,
-            filepath,
-            SDL_GetError());
-    cleanup(2);
-  }
 }
 
 void

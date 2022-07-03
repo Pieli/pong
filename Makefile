@@ -9,7 +9,7 @@ CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image 
 HDRS :=
 
 # add source files here
-SRCS := pong.c game.c ball.c player.c
+SRCS := pong.c game.c ball.c player.c font.c
 
 # generate names of object files
 OBJS := $(SRCS:.c=.o)
@@ -38,7 +38,7 @@ $(EXEC): $(OBJS) $(HDRS) Makefile
 clean:
 	rm -f $(EXEC) $(OBJS)
 
-run: ./dvd
-	make && ./dvd
+run: ./pong
+	make && ./pong
 
 .PHONY: all clean
