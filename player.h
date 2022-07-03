@@ -9,10 +9,11 @@ typedef struct Player
   SDL_Rect drect;
 } Player;
 
+extern Player player;
 
-void playerInit();
-void playerUpdate();
-void playerRender();
-void playerClean();
+void playerInit(Player *player);
+void playerUpdate(Player *player);
+void playerRender(Player *player);
+void playerClean(Player *player);
 
 #endif

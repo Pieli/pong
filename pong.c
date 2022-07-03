@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_log.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_scancode.h>
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_video.h>
@@ -16,20 +17,24 @@
 #include "player.h"
 
 void
-render_experiment();
-
-void
 init();
 void
 clean();
 void
 render();
 void
-logic();
+logicWalls();
+void
+logicPlayer();
 void
 handleEvent(SDL_Event event);
 void
 update();
+
+Player leftPlayer;
+Player rightPlayer;
+
+const int PLAYER_SPEED = 10;
 
 int
 main(int argc, char* args[])
@@ -38,6 +43,13 @@ main(int argc, char* args[])
   float elapsedMS;
 
   init();
+
+  // TODO rewrite to own function, called when point is scored
+  // inital positioning
+  leftPlayer.drect.x = 30;
+  leftPlayer.drect.y = 500;
+  rightPlayer.drect.x = 1500;
+  rightPlayer.drect.y = 500;
 
   SDL_Event event;
   for (;;) {
@@ -50,7 +62,9 @@ main(int argc, char* args[])
 
     handleEvent(event);
     update();
-    logic();
+    logicPlayer();
+    logicWalls();
+    // score?
     render();
 
     end = SDL_GetPerformanceCounter();
@@ -73,20 +87,46 @@ void
 init()
 {
   gameInit();
-  playerInit();
+  playerInit(&leftPlayer);
+  playerInit(&rightPlayer);
   ballInit();
 }
 
 void
 clean()
 {
-  playerClean();
+  playerClean(&leftPlayer);
+  playerClean(&rightPlayer);
   ballClean();
   gameClean();
 }
 
 void
-logic()
+logicPlayer()
+{
+  // right Player
+  if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
+    if ((ball.drect.y >= (rightPlayer.drect.y - ball.drect.h)) &&
+        (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
+      SDL_Log("test");
+      ball.x_direction *= -1;
+      return;
+    }
+  }
+
+  // left Player
+  if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
+    if ((ball.drect.y >= (leftPlayer.drect.y - ball.drect.h)) &&
+        (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
+      SDL_Log("test 2");
+      ball.x_direction *= -1;
+      return;
+    }
+  }
+}
+
+void
+logicWalls()
 {
   // right boundary
   if (ball.drect.x + ball.drect.w > game.wind_w) {
@@ -128,7 +168,8 @@ render()
 {
 
   gameRender();
-  playerRender();
+  playerRender(&leftPlayer);
+  playerRender(&rightPlayer);
   ballRender();
 
   // for multiple rendering
@@ -139,4 +180,24 @@ void
 handleEvent(SDL_Event event)
 {
   gameInputAction(event);
+
+  switch (event.type) {
+    case SDL_KEYDOWN:
+      switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_W:
+          leftPlayer.drect.y -= PLAYER_SPEED;
+          break;
+        case SDL_SCANCODE_S:
+          leftPlayer.drect.y += PLAYER_SPEED;
+          break;
+        case SDL_SCANCODE_UP:
+          rightPlayer.drect.y -= PLAYER_SPEED;
+          break;
+        case SDL_SCANCODE_DOWN:
+          rightPlayer.drect.y += PLAYER_SPEED;
+          break;
+        default:
+          break;
+      }
+  }
 }
