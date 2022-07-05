@@ -27,6 +27,8 @@ render();
 void
 logicWalls();
 void
+logicWallsPlayer(Player* player);
+void
 logicPlayer();
 void
 handleEvent(SDL_Event event);
@@ -70,6 +72,8 @@ main(int argc, char* args[])
     update();
     logicPlayer();
     logicWalls();
+    logicWallsPlayer(&leftPlayer);
+    logicWallsPlayer(&rightPlayer);
     // score?
     render();
 
@@ -132,6 +136,33 @@ logicPlayer()
 }
 
 void
+logicWallsPlayer(Player* player)
+{
+  // right boundary
+  if (player->drect.x + player->drect.w > game.wind_w) {
+    player->drect.x = game.wind_w - player->drect.w;
+    return;
+  }
+  // left boundary
+  if (player->drect.x < 0) {
+    player->drect.x = 0;
+    return;
+  }
+
+  // bottom boundary
+  if (player->drect.y + player->drect.h > game.wind_h) {
+    player->drect.y = game.wind_h - player->drect.h;
+    return;
+  }
+
+  // upper bounda->y
+  if (player->drect.y < 0) {
+    player->drect.y = 0;
+    return;
+  }
+}
+
+void
 logicWalls()
 {
   // right boundary
@@ -161,7 +192,6 @@ logicWalls()
     return;
   }
 }
-
 void
 update()
 {
