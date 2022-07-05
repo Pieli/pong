@@ -36,7 +36,7 @@ update();
 Player leftPlayer;
 Player rightPlayer;
 
-const int PLAYER_SPEED = 10;
+const int PLAYER_SPEED = 30;
 
 // TODO: move Scenesome where else
 Scene scene;

@@ -14,12 +14,12 @@ void
 playerInit(Player* player)
 {
   // inital texture
-  player->drect.w = 100;
-  player->drect.h = 100;
+  player->drect.w = 50;
+  player->drect.h = 200;
 
   //  scaling
-  player->drect.w /= 2;
-  player->drect.h /= 1;
+  // player->drect.w /= 3;
+  // player->drect.h /= 1;
 
   // positioning
   player->drect.x = (game.wind_w - player->drect.w) / 2;

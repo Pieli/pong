@@ -5,7 +5,7 @@
 #include "game.h"
 
 const char FILE_PATH[] = "JetBrainsMono-Regular.ttf";
-const int PT = 18;
+const int PT = 38;
 SDL_Color FORE_COLOR = { 0xFF, 0xFF, 0xFF, 0 };
 SDL_Color BACK_COLOR = { 0x00, 0x00, 0x00, 0 };
 
