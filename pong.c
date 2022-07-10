@@ -134,11 +134,11 @@ clean()
 }
 
 void
-logicPlayer()
+logicPlayer2()
 {
   // right Player
   if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
-    if ((ball.drect.y >= (rightPlayer.drect.y - ball.drect.h)) &&
+    if (((ball.drect.y + ball.drect.h) >= rightPlayer.drect.y) &&
         (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
       ball.x_direction *= -1;
       return;
@@ -147,7 +147,29 @@ logicPlayer()
 
   // left Player
   if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
-    if ((ball.drect.y >= (leftPlayer.drect.y - ball.drect.h)) &&
+    if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
+        (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
+      ball.x_direction *= -1;
+      return;
+    }
+  }
+}
+
+void
+logicPlayer()
+{
+  // right Player
+  if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
+    if (((ball.drect.y + ball.drect.h) >= rightPlayer.drect.y) &&
+        (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
+      ball.x_direction *= -1;
+      return;
+    }
+  }
+
+  // left Player
+  if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
+    if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
         (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
       ball.x_direction *= -1;
       return;
