@@ -158,11 +158,36 @@ logicPlayer2()
 void
 logicPlayer()
 {
+  double center = ball.drect.y + (ball.drect.h / 2.0);
+  double block = rightPlayer.drect.h / 9.0;
+  double area_top, area_bottom;
+
   // right Player
   if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
     if (((ball.drect.y + ball.drect.h) >= rightPlayer.drect.y) &&
         (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
-      ball.x_direction *= -1;
+
+      ball.x_direction = -1;
+      area_top = rightPlayer.drect.y + (block / 2);
+      area_bottom = rightPlayer.drect.y + rightPlayer.drect.h - (block / 2);
+      double factor = 1.0;
+
+      for (int i = 0; i < 5; i++) {
+        factor -= 0.2;
+        SDL_Log("here %f", factor);
+        if (center <= area_top) {
+          ball.y_direction = -factor;
+          return;
+        }
+        if (center > area_bottom) {
+          ball.y_direction = factor;
+          return;
+        }
+
+        area_top += block;
+        area_bottom -= block;
+      }
+
       return;
     }
   }
@@ -172,6 +197,7 @@ logicPlayer()
     if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
         (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
       ball.x_direction *= -1;
+      ball.y_direction = 0;
       return;
     }
   }
@@ -279,10 +305,6 @@ handleEvent(SDL_Event event)
 
   switch (event.type) {
     case SDL_KEYDOWN:
-      // SDL_Log("Key was pressed %s %d %d",
-      //         buffer,
-      //         event.key.state,
-      //         event.key.keysym.scancode);
       switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_W:
           hold_w = 1;
@@ -300,11 +322,6 @@ handleEvent(SDL_Event event)
           break;
       }
     case SDL_KEYUP:
-      // SDL_Log("Key was released %s %d %d",
-      //         buffer,
-      //         event.key.state,
-      //         event.key.keysym.scancode);
-      // hacky
       if (event.key.state == SDL_PRESSED)
         break;
 
@@ -334,7 +351,3 @@ handleEvent(SDL_Event event)
   rightPlayer.drect.y -= hold_up * PLAYER_SPEED;
   rightPlayer.drect.y += hold_down * PLAYER_SPEED;
 }
-
-void
-handleKeyPressedEvent(SDL_Event event)
-{}

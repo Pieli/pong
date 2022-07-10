@@ -8,12 +8,12 @@
 #include "game.h"
 
 Ball ball;
-const int BALL_SPEED = 20;
+const int BALL_SPEED = 10;
 
 void
 ballInit()
 {
-  ball.x_direction = 1;
+  ball.x_direction = 1.0;
   ball.y_direction = 0;
 
   // size
@@ -21,8 +21,8 @@ ballInit()
   ball.drect.h = 25;
 
   // positioning
-  ball.drect.x = (1000 - ball.drect.w) / 2;
-  ball.drect.y = (1000 - ball.drect.h) / 2;
+  ball.drect.x = (1000 - ball.drect.w) / 2.0;
+  ball.drect.y = (1000 - ball.drect.h) / 2.0;
 }
 
 void
