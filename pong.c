@@ -16,6 +16,7 @@
 #include "ball.h"
 #include "font.h"
 #include "game.h"
+#include "line.h"
 #include "player.h"
 
 void
@@ -52,11 +53,11 @@ unsigned int hold_down = 0;
 unsigned int score_p_1 = 0;
 unsigned int score_p_2 = 0;
 
-double POS_SCORE_P_1_X = (1.0 / 3);
-double POS_SCORE_P_1_Y = (1.0 / 3);
+const double POS_SCORE_P_1_X = (1.0 / 3);
+const double POS_SCORE_P_1_Y = (1.0 / 3);
 
-double POS_SCORE_P_2_X = (2.0 / 3);
-double POS_SCORE_P_2_Y = (1.0 / 3);
+const double POS_SCORE_P_2_X = (2.0 / 3);
+const double POS_SCORE_P_2_Y = (1.0 / 3);
 
 int
 main(int argc, char* args[])
@@ -114,6 +115,7 @@ init()
 {
   gameInit();
   fontInit();
+  initLine();
   playerInit(&leftPlayer);
   playerInit(&rightPlayer);
   ballInit();
@@ -122,6 +124,7 @@ init()
 void
 clean()
 {
+  cleanLine();
   fontClean(&scene_player_1);
   fontClean(&scene_player_2);
   playerClean(&leftPlayer);
@@ -182,16 +185,22 @@ logicWallsPlayer(Player* player)
 void
 logicWalls()
 {
+  char num[12];
+
   // right boundary
   if (ball.drect.x + ball.drect.w > game.wind_w) {
     ball.drect.x = game.wind_w - ball.drect.w;
     ball.x_direction *= -1;
+    sprintf(num, "%d", ++score_p_1);
+    fontUpdate(&scene_player_1, num, POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
     return;
   }
   // left boundary
   if (ball.drect.x < 0) {
     ball.drect.x = 0;
     ball.x_direction *= -1;
+    sprintf(num, "%d", ++score_p_2);
+    fontUpdate(&scene_player_2, num, POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
     return;
   }
 
@@ -221,6 +230,7 @@ render()
 {
 
   gameRender();
+  renderLine();
   playerRender(&leftPlayer);
   playerRender(&rightPlayer);
   fontRender(&scene_player_1);
