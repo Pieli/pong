@@ -43,6 +43,11 @@ const int PLAYER_SPEED = 30;
 // TODO: move Scenesome where else
 Scene scene;
 
+unsigned int hold_w = 0;
+unsigned int hold_s = 0;
+unsigned int hold_up = 0;
+unsigned int hold_down = 0;
+
 int
 main(int argc, char* args[])
 {
@@ -218,23 +223,73 @@ handleEvent(SDL_Event event)
 {
   gameInputAction(event);
 
+  time_t timer;
+  char buffer[26];
+  struct tm* tm_info;
+
+  timer = time(NULL);
+  tm_info = localtime(&timer);
+
+  strftime(buffer, 26, "%Y-%m-%d %H:%M:%S", tm_info);
+
   switch (event.type) {
     case SDL_KEYDOWN:
+      SDL_Log("Key was pressed %s %d %d",
+              buffer,
+              event.key.state,
+              event.key.keysym.scancode);
       switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_W:
-          leftPlayer.drect.y -= PLAYER_SPEED;
+          hold_w = 1;
           break;
         case SDL_SCANCODE_S:
-          leftPlayer.drect.y += PLAYER_SPEED;
+          hold_s = 1;
           break;
         case SDL_SCANCODE_UP:
-          rightPlayer.drect.y -= PLAYER_SPEED;
+          hold_up = 1;
           break;
         case SDL_SCANCODE_DOWN:
-          rightPlayer.drect.y += PLAYER_SPEED;
+          hold_down = 1;
           break;
         default:
           break;
       }
+    case SDL_KEYUP:
+      SDL_Log("Key was released %s %d %d",
+              buffer,
+              event.key.state,
+              event.key.keysym.scancode);
+      // hacky
+      if (event.key.state == SDL_PRESSED)
+        break;
+
+      switch (event.key.keysym.scancode) {
+        case SDL_SCANCODE_W:
+          hold_w = event.key.state;
+          break;
+        case SDL_SCANCODE_S:
+          hold_s = event.key.state;
+          break;
+        case SDL_SCANCODE_UP:
+          hold_up = event.key.state;
+          break;
+        case SDL_SCANCODE_DOWN:
+          hold_down = event.key.state;
+          break;
+        default:
+          break;
+      }
+
+    default:
+      break;
   }
+
+  leftPlayer.drect.y -= hold_w * PLAYER_SPEED;
+  leftPlayer.drect.y += hold_s * PLAYER_SPEED;
+  rightPlayer.drect.y -= hold_up * PLAYER_SPEED;
+  rightPlayer.drect.y += hold_down * PLAYER_SPEED;
 }
+
+void
+handleKeyPressedEvent(SDL_Event event)
+{}
