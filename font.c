@@ -5,7 +5,7 @@
 #include "game.h"
 
 const char FILE_PATH[] = "JetBrainsMono-Regular.ttf";
-const int PT = 38;
+const int PT = 108;
 SDL_Color FORE_COLOR = { 0xFF, 0xFF, 0xFF, 0 };
 SDL_Color BACK_COLOR = { 0x00, 0x00, 0x00, 0 };
 
@@ -48,7 +48,10 @@ fontRender(Scene* scene)
 }
 
 void
-fontUpdate(const char* message, Scene* scene)
+fontUpdate(Scene* scene,
+           const char* message,
+           double relative_x,
+           double relative_y)
 {
   SDL_Surface* tmpText;
 
@@ -62,8 +65,8 @@ fontUpdate(const char* message, Scene* scene)
     exit(1);
   }
 
-  scene->messageRect.x = (game.wind_w - tmpText->w) / 2;
-  scene->messageRect.y = (game.wind_h - tmpText->h) / 2;
+  scene->messageRect.x = (game.wind_w - tmpText->w) / (1.0 / relative_x);
+  scene->messageRect.y = (game.wind_h - tmpText->h) / (1.0 / relative_y);
   scene->messageRect.w = tmpText->w;
   scene->messageRect.h = tmpText->h;
   scene->messageTexture = SDL_CreateTextureFromSurface(game.renderer, tmpText);

@@ -41,12 +41,22 @@ Player rightPlayer;
 const int PLAYER_SPEED = 30;
 
 // TODO: move Scenesome where else
-Scene scene;
+Scene scene_player_1;
+Scene scene_player_2;
 
 unsigned int hold_w = 0;
 unsigned int hold_s = 0;
 unsigned int hold_up = 0;
 unsigned int hold_down = 0;
+
+unsigned int score_p_1 = 0;
+unsigned int score_p_2 = 0;
+
+double POS_SCORE_P_1_X = (1.0 / 3);
+double POS_SCORE_P_1_Y = (1.0 / 3);
+
+double POS_SCORE_P_2_X = (2.0 / 3);
+double POS_SCORE_P_2_Y = (1.0 / 3);
 
 int
 main(int argc, char* args[])
@@ -55,7 +65,8 @@ main(int argc, char* args[])
   float elapsedMS;
 
   init();
-  fontUpdate("Hello my friend", &scene);
+  fontUpdate(&scene_player_1, "0", POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
+  fontUpdate(&scene_player_2, "0", POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
 
   // TODO rewrite to own function, called when point is scored
   // inital positioning
@@ -111,7 +122,8 @@ init()
 void
 clean()
 {
-  fontClean(&scene);
+  fontClean(&scene_player_1);
+  fontClean(&scene_player_2);
   playerClean(&leftPlayer);
   playerClean(&rightPlayer);
   ballClean();
@@ -211,7 +223,8 @@ render()
   gameRender();
   playerRender(&leftPlayer);
   playerRender(&rightPlayer);
-  fontRender(&scene);
+  fontRender(&scene_player_1);
+  fontRender(&scene_player_2);
   ballRender();
 
   // for multiple rendering
@@ -234,10 +247,10 @@ handleEvent(SDL_Event event)
 
   switch (event.type) {
     case SDL_KEYDOWN:
-      SDL_Log("Key was pressed %s %d %d",
-              buffer,
-              event.key.state,
-              event.key.keysym.scancode);
+      // SDL_Log("Key was pressed %s %d %d",
+      //         buffer,
+      //         event.key.state,
+      //         event.key.keysym.scancode);
       switch (event.key.keysym.scancode) {
         case SDL_SCANCODE_W:
           hold_w = 1;
@@ -255,10 +268,10 @@ handleEvent(SDL_Event event)
           break;
       }
     case SDL_KEYUP:
-      SDL_Log("Key was released %s %d %d",
-              buffer,
-              event.key.state,
-              event.key.keysym.scancode);
+      // SDL_Log("Key was released %s %d %d",
+      //         buffer,
+      //         event.key.state,
+      //         event.key.keysym.scancode);
       // hacky
       if (event.key.state == SDL_PRESSED)
         break;
