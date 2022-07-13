@@ -8,7 +8,7 @@
 #include "game.h"
 
 Ball ball;
-const int BALL_SPEED = 10;
+const int BALL_SPEED = 15;
 
 void
 ballInit()
@@ -46,4 +46,5 @@ ballRender()
 
 void
 ballClean()
-{}
+{
+}

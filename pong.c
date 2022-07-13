@@ -39,7 +39,7 @@ update();
 Player leftPlayer;
 Player rightPlayer;
 
-const int PLAYER_SPEED = 30;
+const int PLAYER_SPEED = 15;
 
 // TODO: move Scenesome where else
 Scene scene_player_1;
@@ -170,10 +170,10 @@ logicPlayer()
       ball.x_direction = -1;
       area_top = rightPlayer.drect.y + (block / 2);
       area_bottom = rightPlayer.drect.y + rightPlayer.drect.h - (block / 2);
-      double factor = 1.0;
+      double factor = 1.5;
 
       for (int i = 0; i < 5; i++) {
-        factor -= 0.2;
+        factor -= 0.3;
         SDL_Log("here %f", factor);
         if (center <= area_top) {
           ball.y_direction = -factor;
@@ -196,8 +196,26 @@ logicPlayer()
   if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
     if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
         (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
-      ball.x_direction *= -1;
-      ball.y_direction = 0;
+      ball.x_direction = 1;
+      area_top = leftPlayer.drect.y + (block / 2);
+      area_bottom = leftPlayer.drect.y + leftPlayer.drect.h - (block / 2);
+      double factor = 1.5;
+
+      for (int i = 0; i < 5; i++) {
+        factor -= 0.3;
+        SDL_Log("there %f", factor);
+        if (center <= area_top) {
+          ball.y_direction = -factor;
+          return;
+        }
+        if (center > area_bottom) {
+          ball.y_direction = factor;
+          return;
+        }
+
+        area_top += block;
+        area_bottom -= block;
+      }
       return;
     }
   }
