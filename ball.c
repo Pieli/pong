@@ -8,7 +8,6 @@
 #include "game.h"
 
 Ball ball;
-const int BALL_SPEED = 15;
 
 const double BALL_START_X = 787.5;
 const double BALL_START_Y = 487.5;
@@ -16,6 +15,7 @@ const double BALL_START_Y = 487.5;
 void
 ballInit()
 {
+  ball.speed = 15;
   ball.x_direction = 1.0;
   ball.y_direction = 0;
 
@@ -31,8 +31,8 @@ ballInit()
 void
 ballUpdate()
 {
-  ball.drect.x += BALL_SPEED * ball.x_direction;
-  ball.drect.y += BALL_SPEED * ball.y_direction;
+  ball.drect.x += ball.speed * ball.x_direction;
+  ball.drect.y += ball.speed * ball.y_direction;
 }
 
 void

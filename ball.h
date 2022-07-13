@@ -8,6 +8,7 @@ typedef struct Ball
 {
   // SDL_Rect srect;
   SDL_Rect drect;
+  double speed;
   double y_direction;
   double x_direction;
 } Ball;

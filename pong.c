@@ -52,9 +52,7 @@ main(int argc, char* args[])
 
   init();
 
-  // TODO rewrite to own function, called when point is scored
   // TODO game dynamic -> 0 y ?
-  // TODO paused screen
   // TODO game finish after 10
   // TODO test on ubuntu
   // TODO test resize
@@ -122,38 +120,34 @@ clean()
 }
 
 void
-logicPlayer()
+calculateAngle(Player player)
 {
-  double center = ball.drect.y + (ball.drect.h / 2.0);
-  double block = rightPlayer.drect.h / 9.0;
-  double area_top, area_bottom;
+  if (ball.speed < 15)
+    ball.speed = 15;
 
-  // right Player
+  ball.x_direction *= -1;
+
+  double factor = 1.5;
+  double middle = player.drect.y + (player.drect.h / 2.0);
+
+  if (ball.drect.y <= middle) {
+    ball.y_direction =
+      ((ball.drect.y + ball.drect.h - player.drect.y - (player.drect.h / 2.0)) /
+       (player.drect.h / 2.0)) *
+      factor;
+  } else {
+    ball.y_direction =
+      ((ball.drect.y - middle) / (player.drect.h / 2.0)) * factor;
+  }
+}
+
+void
+logicPlayer(Player player)
+{
   if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
     if (((ball.drect.y + ball.drect.h) >= rightPlayer.drect.y) &&
         (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
-
-      ball.x_direction = -1;
-      area_top = rightPlayer.drect.y + (block / 2);
-      area_bottom = rightPlayer.drect.y + rightPlayer.drect.h - (block / 2);
-      double factor = 1.5;
-
-      for (int i = 0; i < 5; i++) {
-        factor -= 0.3;
-        SDL_Log("here %f", factor);
-        if (center <= area_top) {
-          ball.y_direction = -factor;
-          return;
-        }
-        if (center > area_bottom) {
-          ball.y_direction = factor;
-          return;
-        }
-
-        area_top += block;
-        area_bottom -= block;
-      }
-
+      calculateAngle(rightPlayer);
       return;
     }
   }
@@ -162,26 +156,7 @@ logicPlayer()
   if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
     if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
         (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
-      ball.x_direction = 1;
-      area_top = leftPlayer.drect.y + (block / 2);
-      area_bottom = leftPlayer.drect.y + leftPlayer.drect.h - (block / 2);
-      double factor = 1.5;
-
-      for (int i = 0; i < 5; i++) {
-        factor -= 0.3;
-        SDL_Log("there %f", factor);
-        if (center <= area_top) {
-          ball.y_direction = -factor;
-          return;
-        }
-        if (center > area_bottom) {
-          ball.y_direction = factor;
-          return;
-        }
-
-        area_top += block;
-        area_bottom -= block;
-      }
+      calculateAngle(leftPlayer);
       return;
     }
   }
@@ -221,6 +196,7 @@ logicWalls()
   // right boundary
   if (ball.drect.x + ball.drect.w > game.wind_w) {
     ball.drect.x = game.wind_w - ball.drect.w;
+    ball.speed = 5;
     gameAddScorePlayer1();
     ballReset(1);
     return;
@@ -228,6 +204,7 @@ logicWalls()
   // left boundary
   if (ball.drect.x < 0) {
     ball.drect.x = 0;
+    ball.speed = 5;
     gameAddScorePlayer2();
     ballReset(-1);
     return;
