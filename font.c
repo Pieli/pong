@@ -55,7 +55,7 @@ fontUpdate(Scene* scene,
 {
   SDL_Surface* tmpText;
 
-  tmpText = TTF_RenderUTF8_Solid(font.font, message, FORE_COLOR);
+  tmpText = TTF_RenderUTF8_Shaded(font.font, message, FORE_COLOR, BACK_COLOR);
 
   if (tmpText == NULL) {
     SDL_Log("Couldn't render text: %s\n", SDL_GetError());

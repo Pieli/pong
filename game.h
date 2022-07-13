@@ -20,7 +20,7 @@ void gameRender();
 void gameClean();
 void gameInputAction();
 
-void gamePause();
+void gamePauseRender();
 void gameAddScorePlayer1();
 void gameAddScorePlayer2();
 

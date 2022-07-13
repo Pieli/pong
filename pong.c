@@ -76,6 +76,7 @@ main(int argc, char* args[])
     handleEvent(event);
 
     if (paused) {
+      render();
       continue;
     }
 
@@ -260,6 +261,10 @@ render()
   playerRender(&leftPlayer);
   playerRender(&rightPlayer);
   ballRender();
+
+  if (paused) {
+    gamePauseRender();
+  }
 
   // for multiple rendering
   SDL_RenderPresent(game.renderer);

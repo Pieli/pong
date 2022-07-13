@@ -77,6 +77,7 @@ gameClean()
   lineClean();
   fontClean(&scene_player_1);
   fontClean(&scene_player_2);
+  fontClean(&paused_text);
 
   SDL_DestroyRenderer(game.renderer);
   SDL_DestroyWindow(game.window);
@@ -92,17 +93,22 @@ gameInputAction(SDL_Event event)
 
   if (event.key.type == SDL_KEYDOWN &&
       event.key.keysym.scancode == SDL_SCANCODE_P) {
-    if (paused)
-      paused = 0;
-    else
+    if (!paused) {
       paused = 1;
+    } else {
+      paused = 0;
+    }
   }
 }
 
 void
-gamePause()
+gamePauseRender()
 {
-  // render font text
+  fontUpdate(&paused_text,
+             "Paused",
+             (game.wind_w - paused_text.messageRect.w) / 2,
+             (game.wind_h - paused_text.messageRect.h) / 2);
+  fontRender(&paused_text);
 }
 
 void
