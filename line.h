@@ -6,8 +6,8 @@
 
 extern SDL_Rect* rectangles;
 
-void initLine();
-void renderLine();
-void cleanLine();
+void lineInit();
+void lineRender();
+void lineClean();
 
 #endif

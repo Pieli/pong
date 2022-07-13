@@ -14,9 +14,7 @@
 #include <time.h>
 
 #include "ball.h"
-#include "font.h"
 #include "game.h"
-#include "line.h"
 #include "player.h"
 
 void
@@ -41,23 +39,10 @@ Player rightPlayer;
 
 const int PLAYER_SPEED = 15;
 
-// TODO: move Scenesome where else
-Scene scene_player_1;
-Scene scene_player_2;
-
 unsigned int hold_w = 0;
 unsigned int hold_s = 0;
 unsigned int hold_up = 0;
 unsigned int hold_down = 0;
-
-unsigned int score_p_1 = 0;
-unsigned int score_p_2 = 0;
-
-const double POS_SCORE_P_1_X = (1.0 / 3);
-const double POS_SCORE_P_1_Y = (1.0 / 3);
-
-const double POS_SCORE_P_2_X = (2.0 / 3);
-const double POS_SCORE_P_2_Y = (1.0 / 3);
 
 int
 main(int argc, char* args[])
@@ -66,32 +51,39 @@ main(int argc, char* args[])
   float elapsedMS;
 
   init();
-  fontUpdate(&scene_player_1, "0", POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
-  fontUpdate(&scene_player_2, "0", POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
 
   // TODO rewrite to own function, called when point is scored
+  // TODO game dynamic -> 0 y ?
+  // TODO paused screen
+  // TODO game finish after 10
+  // TODO test on ubuntu
+  // TODO test resize
+
   // inital positioning
   leftPlayer.drect.x = 30;
   leftPlayer.drect.y = 500;
-  rightPlayer.drect.x = 1500;
+  rightPlayer.drect.x = 1520;
   rightPlayer.drect.y = 500;
 
   SDL_Event event;
   for (;;) {
     if (SDL_PollEvent(&event)) {
-      if (event.type == SDL_QUIT) {
+      if (event.type == SDL_QUIT)
         break;
-      }
     }
     start = SDL_GetPerformanceCounter();
 
     handleEvent(event);
+
+    if (paused) {
+      continue;
+    }
+
     update();
     logicPlayer();
     logicWalls();
     logicWallsPlayer(&leftPlayer);
     logicWallsPlayer(&rightPlayer);
-    // score?
     render();
 
     end = SDL_GetPerformanceCounter();
@@ -114,8 +106,6 @@ void
 init()
 {
   gameInit();
-  fontInit();
-  initLine();
   playerInit(&leftPlayer);
   playerInit(&rightPlayer);
   ballInit();
@@ -124,35 +114,10 @@ init()
 void
 clean()
 {
-  cleanLine();
-  fontClean(&scene_player_1);
-  fontClean(&scene_player_2);
   playerClean(&leftPlayer);
   playerClean(&rightPlayer);
   ballClean();
   gameClean();
-}
-
-void
-logicPlayer2()
-{
-  // right Player
-  if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
-    if (((ball.drect.y + ball.drect.h) >= rightPlayer.drect.y) &&
-        (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
-      ball.x_direction *= -1;
-      return;
-    }
-  }
-
-  // left Player
-  if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
-    if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
-        (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
-      ball.x_direction *= -1;
-      return;
-    }
-  }
 }
 
 void
@@ -251,22 +216,19 @@ logicWallsPlayer(Player* player)
 void
 logicWalls()
 {
-  char num[12];
 
   // right boundary
   if (ball.drect.x + ball.drect.w > game.wind_w) {
     ball.drect.x = game.wind_w - ball.drect.w;
-    ball.x_direction *= -1;
-    sprintf(num, "%d", ++score_p_1);
-    fontUpdate(&scene_player_1, num, POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
+    gameAddScorePlayer1();
+    ballReset(1);
     return;
   }
   // left boundary
   if (ball.drect.x < 0) {
     ball.drect.x = 0;
-    ball.x_direction *= -1;
-    sprintf(num, "%d", ++score_p_2);
-    fontUpdate(&scene_player_2, num, POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
+    gameAddScorePlayer2();
+    ballReset(-1);
     return;
   }
 
@@ -294,13 +256,9 @@ update()
 void
 render()
 {
-
   gameRender();
-  renderLine();
   playerRender(&leftPlayer);
   playerRender(&rightPlayer);
-  fontRender(&scene_player_1);
-  fontRender(&scene_player_2);
   ballRender();
 
   // for multiple rendering

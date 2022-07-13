@@ -17,10 +17,6 @@ playerInit(Player* player)
   player->drect.w = 50;
   player->drect.h = 200;
 
-  //  scaling
-  // player->drect.w /= 3;
-  // player->drect.h /= 1;
-
   // positioning
   player->drect.x = (game.wind_w - player->drect.w) / 2;
   player->drect.y = (game.wind_h - player->drect.h) / 2;
@@ -28,7 +24,8 @@ playerInit(Player* player)
 
 void
 playerUpdate(Player* player)
-{}
+{
+}
 
 void
 playerRender(Player* player)
@@ -43,4 +40,5 @@ playerRender(Player* player)
 
 void
 playerClean(Player* player)
-{}
+{
+}

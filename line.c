@@ -17,7 +17,7 @@ SDL_Rect* rectangles;
 unsigned int number_of_spaces = 0;
 
 void
-initLine()
+lineInit()
 {
   double gap = GAP_SIZE;
 
@@ -63,7 +63,7 @@ initLine()
 }
 
 void
-renderLine()
+lineRender()
 {
   SDL_SetRenderDrawColor(game.renderer, 255, 255, 255, 255);
   if (SDL_RenderDrawRects(game.renderer, rectangles, number_of_spaces + 2) !=
@@ -76,7 +76,7 @@ renderLine()
 }
 
 void
-cleanLine()
+lineClean()
 {
   if (rectangles) {
     free(rectangles);

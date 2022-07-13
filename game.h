@@ -12,12 +12,17 @@ typedef struct Game {
 
 
 extern Game game;
+extern int paused;
 
 void gameInit();
 void gameUpdate();
 void gameRender();
 void gameClean();
-void gameInputAction(SDL_Event event);
+void gameInputAction();
+
+void gamePause();
+void gameAddScorePlayer1();
+void gameAddScorePlayer2();
 
 
 #endif

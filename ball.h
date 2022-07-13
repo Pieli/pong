@@ -19,5 +19,6 @@ void ballInit();
 void ballUpdate();
 void ballRender();
 void ballClean();
+void ballReset();
 
 #endif
