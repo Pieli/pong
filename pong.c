@@ -9,6 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_video.h>
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -122,23 +123,33 @@ clean()
 void
 calculateAngle(Player player)
 {
-  if (ball.speed < 15)
-    ball.speed = 15;
+  if (ball.speed < 20)
+    ball.speed = 20;
 
   ball.x_direction *= -1;
 
-  double factor = 1.5;
+  double factor = 0.9;
   double middle = player.drect.y + (player.drect.h / 2.0);
 
   if (ball.drect.y <= middle) {
-    ball.y_direction =
-      ((ball.drect.y + ball.drect.h - player.drect.y - (player.drect.h / 2.0)) /
-       (player.drect.h / 2.0)) *
-      factor;
+    ball.y_direction = ((ball.drect.y + ball.drect.h - player.drect.y -
+                         (player.drect.h / 2.0) + 5) /
+                        (player.drect.h / 2.0)) *
+                       factor;
   } else {
     ball.y_direction =
       ((ball.drect.y - middle) / (player.drect.h / 2.0)) * factor;
   }
+
+  SDL_Log("ball y direction %f", ball.y_direction);
+
+  double ball_dir_old = ball.x_direction;
+  int dir = 1;
+
+  if (ball_dir_old < 0)
+    dir = -1;
+
+  ball.x_direction = dir * sqrt(1 - (ball.y_direction * ball.y_direction));
 }
 
 void
@@ -147,6 +158,7 @@ logicPlayer(Player player)
   if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
     if (((ball.drect.y + ball.drect.h) >= rightPlayer.drect.y) &&
         (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
+      ball.drect.x = rightPlayer.drect.x - ball.drect.w;
       calculateAngle(rightPlayer);
       return;
     }
@@ -156,6 +168,7 @@ logicPlayer(Player player)
   if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
     if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
         (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
+      ball.drect.x = leftPlayer.drect.x + leftPlayer.drect.w;
       calculateAngle(leftPlayer);
       return;
     }
@@ -196,7 +209,7 @@ logicWalls()
   // right boundary
   if (ball.drect.x + ball.drect.w > game.wind_w) {
     ball.drect.x = game.wind_w - ball.drect.w;
-    ball.speed = 5;
+    ball.speed = 10;
     gameAddScorePlayer1();
     ballReset(1);
     return;
@@ -204,7 +217,7 @@ logicWalls()
   // left boundary
   if (ball.drect.x < 0) {
     ball.drect.x = 0;
-    ball.speed = 5;
+    ball.speed = 10;
     gameAddScorePlayer2();
     ballReset(-1);
     return;

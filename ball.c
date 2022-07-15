@@ -15,7 +15,7 @@ const double BALL_START_Y = 487.5;
 void
 ballInit()
 {
-  ball.speed = 15;
+  ball.speed = 20;
   ball.x_direction = 1.0;
   ball.y_direction = 0;
 
