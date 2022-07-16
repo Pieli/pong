@@ -13,7 +13,7 @@ const double BALL_START_X = 787.5;
 const double BALL_START_Y = 487.5;
 
 void
-ballInit()
+ballInit(void)
 {
   ball.speed = 20;
   ball.x_direction = 1.0;
@@ -29,14 +29,14 @@ ballInit()
 }
 
 void
-ballUpdate()
+ballUpdate(void)
 {
   ball.drect.x += ball.speed * ball.x_direction;
   ball.drect.y += ball.speed * ball.y_direction;
 }
 
 void
-ballRender()
+ballRender(void)
 {
   if (SDL_SetRenderDrawColor(game.renderer, 255, 255, 255, 255) != 0) {
     SDL_Log("Something failed: %s", SDL_GetError());
@@ -68,6 +68,6 @@ ballReset(int direction)
 }
 
 void
-ballClean()
+ballClean(void)
 {
 }

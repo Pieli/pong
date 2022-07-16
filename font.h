@@ -21,9 +21,12 @@ typedef struct Scene
 
 extern Font font;
 
-void fontInit();
-void fontRender();
-void fontUpdate();
-void fontClean();
+void fontInit(void);
+void fontRender(Scene* scene);
+void fontUpdate(Scene* scene,
+           const char* message,
+           double relative_x,
+           double relative_y);
+void fontClean(Scene* scene);
 
 #endif

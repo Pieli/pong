@@ -16,10 +16,10 @@ typedef struct Ball
 
 extern Ball ball;
 
-void ballInit();
-void ballUpdate();
-void ballRender();
-void ballClean();
-void ballReset();
+void ballInit(void);
+void ballUpdate(void);
+void ballRender(void);
+void ballClean(void);
+void ballReset(int direction);
 
 #endif

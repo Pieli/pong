@@ -19,21 +19,21 @@
 #include "player.h"
 
 void
-init();
+init(void);
 void
-clean();
+clean(void);
 void
-render();
+render(void);
 void
-logicWalls();
+logicWalls(void);
 void
 logicWallsPlayer(Player* player);
 void
-logicPlayer();
+logicPlayer(void);
 void
 handleEvent(SDL_Event event);
 void
-update();
+update(void);
 
 Player leftPlayer;
 Player rightPlayer;
@@ -53,7 +53,6 @@ main(int argc, char* args[])
 
   init();
 
-  // TODO game dynamic -> 0 y ?
   // TODO game finish after 10
   // TODO test on ubuntu
   // TODO test resize
@@ -103,7 +102,7 @@ main(int argc, char* args[])
 }
 
 void
-init()
+init(void)
 {
   gameInit();
   playerInit(&leftPlayer);
@@ -112,7 +111,7 @@ init()
 }
 
 void
-clean()
+clean(void)
 {
   playerClean(&leftPlayer);
   playerClean(&rightPlayer);
@@ -140,8 +139,6 @@ calculateAngle(Player player)
     ball.y_direction =
       ((ball.drect.y - middle) / (player.drect.h / 2.0)) * factor;
   }
-
-  SDL_Log("ball y direction %f", ball.y_direction);
 
   double ball_dir_old = ball.x_direction;
   int dir = 1;
@@ -218,7 +215,7 @@ logicWallsPlayer(Player* player)
 }
 
 void
-logicWalls()
+logicWalls(void)
 {
 
   // right boundary
@@ -253,14 +250,14 @@ logicWalls()
   }
 }
 void
-update()
+update(void)
 {
   // playerUpdate();
   ballUpdate();
 }
 
 void
-render()
+render(void)
 {
   gameRender();
   playerRender(&leftPlayer);

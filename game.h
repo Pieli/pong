@@ -14,15 +14,15 @@ typedef struct Game {
 extern Game game;
 extern int paused;
 
-void gameInit();
-void gameUpdate();
-void gameRender();
-void gameClean();
-void gameInputAction();
+void gameInit(void);
+void gameUpdate(void);
+void gameRender(void);
+void gameClean(void);
+void gameInputAction(SDL_Event event);
 
-void gamePauseRender();
-void gameAddScorePlayer1();
-void gameAddScorePlayer2();
+void gamePauseRender(void);
+void gameAddScorePlayer1(void);
+void gameAddScorePlayer2(void);
 
 
 #endif

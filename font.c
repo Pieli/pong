@@ -12,7 +12,7 @@ SDL_Color BACK_COLOR = { 0x00, 0x00, 0x00, 0 };
 Font font;
 
 void
-fontInit()
+fontInit(void)
 {
   if (TTF_Init() != 0) {
     SDL_Log("Couldn't initialize TTF: %s\n", SDL_GetError());

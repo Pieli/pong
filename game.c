@@ -22,7 +22,7 @@ const double POS_SCORE_P_2_X = (2.0 / 3);
 const double POS_SCORE_P_2_Y = (1.0 / 3);
 
 void
-gameInit()
+gameInit(void)
 {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     SDL_Log("error during init of SDL: %s\n", SDL_GetError());
@@ -50,12 +50,12 @@ gameInit()
 }
 
 void
-gameUpdate()
+gameUpdate(void)
 {
 }
 
 void
-gameRender()
+gameRender(void)
 {
   // set color to white
   SDL_SetRenderDrawColor(game.renderer, 0, 0, 0, 255);
@@ -72,7 +72,7 @@ gameRender()
 }
 
 void
-gameClean()
+gameClean(void)
 {
   lineClean();
   fontClean(&scene_player_1);
@@ -102,7 +102,7 @@ gameInputAction(SDL_Event event)
 }
 
 void
-gamePauseRender()
+gamePauseRender(void)
 {
   fontUpdate(&paused_text,
              "Paused",
@@ -112,7 +112,7 @@ gamePauseRender()
 }
 
 void
-gameAddScorePlayer1()
+gameAddScorePlayer1(void)
 {
   char num[12];
   sprintf(num, "%d", ++score_p_1);
@@ -120,7 +120,7 @@ gameAddScorePlayer1()
 }
 
 void
-gameAddScorePlayer2()
+gameAddScorePlayer2(void)
 {
   char num[12];
   sprintf(num, "%d", ++score_p_2);
