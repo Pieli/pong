@@ -153,12 +153,21 @@ calculateAngle(Player player)
 }
 
 void
-logicPlayer(Player player)
+logicPlayer(void)
 {
-  if (ball.drect.x + ball.drect.w >= rightPlayer.drect.x) {
-    if (((ball.drect.y + ball.drect.h) >= rightPlayer.drect.y) &&
+  double ball_x_2 = ball.drect.x + ball.drect.w;
+  double ball_y_2 = ball.drect.y + ball.drect.h;
+
+  if (ball_x_2 >= rightPlayer.drect.x) {
+    if ((ball_y_2 >= rightPlayer.drect.y) &&
         (ball.drect.y <= (rightPlayer.drect.y + rightPlayer.drect.h))) {
-      ball.drect.x = rightPlayer.drect.x - ball.drect.w;
+      if ((ball.drect.x + ball.drect.w) >
+          (rightPlayer.drect.x + (rightPlayer.drect.w / 2.0))) {
+        if (ball.drect.y < (rightPlayer.drect.y + rightPlayer.drect.h / 2.0))
+          ball.drect.y = rightPlayer.drect.y - ball.drect.h;
+        else
+          ball.drect.y = rightPlayer.drect.y + rightPlayer.drect.h;
+      }
       calculateAngle(rightPlayer);
       return;
     }
@@ -166,9 +175,15 @@ logicPlayer(Player player)
 
   // left Player
   if (leftPlayer.drect.x + leftPlayer.drect.w >= ball.drect.x) {
-    if (((ball.drect.y + ball.drect.h) >= leftPlayer.drect.y) &&
+    if ((ball_y_2 >= leftPlayer.drect.y) &&
         (ball.drect.y <= (leftPlayer.drect.y + leftPlayer.drect.h))) {
-      ball.drect.x = leftPlayer.drect.x + leftPlayer.drect.w;
+      if (ball.drect.x < (leftPlayer.drect.x + (leftPlayer.drect.w / 2.0))) {
+        if (ball.drect.y < (leftPlayer.drect.y + (leftPlayer.drect.h / 2.0))) {
+          ball.drect.y = leftPlayer.drect.y - ball.drect.h;
+        } else {
+          ball.drect.y = leftPlayer.drect.y + leftPlayer.drect.h;
+        }
+      }
       calculateAngle(leftPlayer);
       return;
     }
