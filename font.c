@@ -77,7 +77,11 @@ fontUpdate(Scene* scene,
 void
 fontClean(Scene* scene)
 {
-  TTF_CloseFont(font.font);
+  if (font.font != NULL) {
+    TTF_CloseFont(font.font);
+    font.font = NULL;
+  }
+
   SDL_DestroyTexture(scene->messageTexture);
   TTF_Quit();
 }
