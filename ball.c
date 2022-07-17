@@ -20,7 +20,7 @@ ballInit(void)
   ball.y_direction = 0;
 
   // size
-  ball.drect.w = game.wind_h * 0.025;
+  ball.drect.w = 25;
   ball.drect.h = ball.drect.w;
 
   // positioning

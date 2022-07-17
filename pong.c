@@ -63,9 +63,9 @@ main(int argc, char* args[])
 
   // inital positioning
   leftPlayer.drect.x = game.wind_w * 0.018;
-  leftPlayer.drect.y = game.wind_h / 2.0;
+  leftPlayer.drect.y = (game.wind_h - leftPlayer.drect.h) / 2.0;
   rightPlayer.drect.x = game.wind_w * 0.95;
-  rightPlayer.drect.y = game.wind_h / 2.0;
+  rightPlayer.drect.y = (game.wind_h - rightPlayer.drect.h) / 2.0;
 
   SDL_Event event;
   for (;;) {
@@ -295,10 +295,10 @@ restart(void)
   playerInit(&leftPlayer);
   playerInit(&rightPlayer);
 
-  leftPlayer.drect.x = 30;
-  leftPlayer.drect.y = 500;
-  rightPlayer.drect.x = 1520;
-  rightPlayer.drect.y = 500;
+  leftPlayer.drect.x = game.wind_w * 0.018;
+  leftPlayer.drect.y = (game.wind_h - leftPlayer.drect.h) / 2.0;
+  rightPlayer.drect.x = game.wind_w * 0.95;
+  rightPlayer.drect.y = (game.wind_h - rightPlayer.drect.h) / 2.0;
 
   ballInit();
 }
