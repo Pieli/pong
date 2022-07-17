@@ -63,9 +63,9 @@ main(int argc, char* args[])
 
   // inital positioning
   leftPlayer.drect.x = 30;
-  leftPlayer.drect.y = 500;
-  rightPlayer.drect.x = 1520;
-  rightPlayer.drect.y = 500;
+  leftPlayer.drect.y = game.wind_h / 2.0;
+  rightPlayer.drect.x = game.wind_w - 30 - 50;
+  rightPlayer.drect.y = game.wind_h / 2.0;
 
   SDL_Event event;
   for (;;) {

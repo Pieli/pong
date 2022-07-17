@@ -8,12 +8,12 @@ TODO: screenshot
 
 Debian based systems:
 ```
-$ sudo apt install libsdl2-dev
+$ sudo apt install libsdl2-2.0-0 libgbm1 libsdl2-dev libsdl2-ttf-dev
 ```
 
 Arch based systems:
 ```
-$ sudo pacman -S sdl2
+$ sudo pacman -S sdl2 sdl2_image
 ```
 
 

@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_error.h>
+#include <SDL2/SDL_video.h>
 
 #include "font.h"
 #include "game.h"
@@ -33,8 +34,12 @@ gameInit(void)
     return;
   }
 
-  game.wind_w = 1600;
-  game.wind_h = 1000;
+  SDL_DisplayMode dm;
+
+  SDL_GetDesktopDisplayMode(0, &dm);
+
+  game.wind_w = dm.w * 0.4;             // 0.40 of global
+  game.wind_h = (game.wind_w / 16) * 9; // w / 16 * 9 of global
 
   game.window = SDL_CreateWindow("pong game",
                                  SDL_WINDOWPOS_UNDEFINED,
