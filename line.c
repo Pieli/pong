@@ -25,10 +25,7 @@ lineInit(void)
 
   double missing_space = game.wind_h - gap - LINE_H;
   number_of_spaces = (int)(missing_space / (gap + LINE_H));
-  SDL_Log("Number of spaces %d", number_of_spaces);
   double epsilon = ((missing_space) / (gap + LINE_H)) - number_of_spaces;
-
-  SDL_Log("epsilon %f", epsilon);
 
   if (epsilon > 0.5)
     gap += (epsilon * (LINE_H + gap)) / (number_of_spaces + 1);

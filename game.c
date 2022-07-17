@@ -38,8 +38,8 @@ gameInit(void)
 
   SDL_GetDesktopDisplayMode(0, &dm);
 
-  game.wind_w = dm.w * 0.4;             // 0.40 of global
-  game.wind_h = (game.wind_w / 16) * 9; // w / 16 * 9 of global
+  game.wind_w = dm.w * 0.4;
+  game.wind_h = (game.wind_w / 16) * 9;
 
   game.window = SDL_CreateWindow("pong game",
                                  SDL_WINDOWPOS_UNDEFINED,
