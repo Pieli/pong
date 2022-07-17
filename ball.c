@@ -15,7 +15,8 @@ ballInit(void)
   double ball_start_x = (game.wind_w - ball.drect.w) / 2.0;
   double ball_start_y = (game.wind_h - ball.drect.h) / 2.0;
 
-  ball.speed = game.wind_w * 0.0125;
+  ball.standard_speed = game.wind_w * 0.0125;
+  ball.speed = ball.standard_speed;
   ball.x_direction = 1.0;
   ball.y_direction = 0;
 

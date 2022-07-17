@@ -132,8 +132,8 @@ clean(void)
 void
 calculateAngle(Player player)
 {
-  if (ball.speed < 20)
-    ball.speed = 20;
+  if (ball.speed < ball.standard_speed)
+    ball.speed = ball.standard_speed;
 
   ball.x_direction *= -1;
 
@@ -231,7 +231,7 @@ logicWalls(void)
   // right boundary
   if (ball.drect.x + ball.drect.w > game.wind_w) {
     ball.drect.x = game.wind_w - ball.drect.w;
-    ball.speed = 10;
+    ball.speed = ball.standard_speed / 2;
     gameAddScorePlayer1();
     ballReset(1);
     return;
@@ -239,7 +239,7 @@ logicWalls(void)
   // left boundary
   if (ball.drect.x < 0) {
     ball.drect.x = 0;
-    ball.speed = 10;
+    ball.speed = ball.standard_speed / 2;
     gameAddScorePlayer2();
     ballReset(-1);
     return;
