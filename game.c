@@ -53,7 +53,7 @@ gameInit(void)
 
   lineInit();
 
-  if (game.wind_w < 100) {
+  if (game.wind_w < 1000) {
     fontInit(&font, 72);
     fontInit(&font_small, 50);
   } else {
