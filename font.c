@@ -5,14 +5,15 @@
 #include "game.h"
 
 const char FILE_PATH[] = "JetBrainsMono-Regular.ttf";
-const int PT = 108;
+
 SDL_Color FORE_COLOR = { 0xFF, 0xFF, 0xFF, 0 };
 SDL_Color BACK_COLOR = { 0x00, 0x00, 0x00, 0 };
 
 Font font;
+Font font_small;
 
 void
-fontInit(void)
+fontInit(Font* font, unsigned int size)
 {
   if (TTF_Init() != 0) {
     SDL_Log("Couldn't initialize TTF: %s\n", SDL_GetError());
@@ -20,24 +21,24 @@ fontInit(void)
     return;
   }
 
-  font.font = TTF_OpenFont(FILE_PATH, PT);
+  font->font = TTF_OpenFont(FILE_PATH, size);
 
-  if (font.font == NULL) {
-    SDL_Log(
-      "Couldn't load %d pt font from %s: %s\n", PT, FILE_PATH, SDL_GetError());
+  if (font->font == NULL) {
+    SDL_Log("Couldn't load %d pt font from %s: %s\n",
+            size,
+            FILE_PATH,
+            SDL_GetError());
     gameClean();
     exit(1);
   }
+  font->outline = 0;
+  font->hinting = TTF_HINTING_NORMAL;
+  font->kerning = 1;
 
-  font.renderstyle = TTF_STYLE_NORMAL;
-  font.outline = 0;
-  font.hinting = TTF_HINTING_NORMAL;
-  font.kerning = 1;
-
-  TTF_SetFontStyle(font.font, font.renderstyle);
-  TTF_SetFontOutline(font.font, font.outline);
-  TTF_SetFontKerning(font.font, font.kerning);
-  TTF_SetFontHinting(font.font, font.hinting);
+  TTF_SetFontStyle(font->font, font->renderstyle);
+  TTF_SetFontOutline(font->font, font->outline);
+  TTF_SetFontKerning(font->font, font->kerning);
+  TTF_SetFontHinting(font->font, font->hinting);
 }
 
 void
@@ -49,6 +50,7 @@ fontRender(Scene* scene)
 
 void
 fontUpdate(Scene* scene,
+           Font font,
            const char* message,
            double relative_x,
            double relative_y)

@@ -20,10 +20,12 @@ typedef struct Scene
 } Scene;
 
 extern Font font;
+extern Font font_small;
 
-void fontInit(void);
+void fontInit(Font* font, unsigned int size);
 void fontRender(Scene* scene);
 void fontUpdate(Scene* scene,
+           Font font,
            const char* message,
            double relative_x,
            double relative_y);

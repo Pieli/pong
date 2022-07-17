@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_error.h>
 
 #include "font.h"
 #include "game.h"
@@ -7,10 +8,13 @@
 Game game;
 
 int paused = 0;
+int winner = 0;
 
 Scene scene_player_1;
 Scene scene_player_2;
 Scene paused_text;
+Scene winner_text_1;
+Scene winner_text_2;
 
 unsigned int score_p_1 = 0;
 unsigned int score_p_2 = 0;
@@ -43,10 +47,11 @@ gameInit(void)
     game.window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
 
   lineInit();
-  fontInit();
+  fontInit(&font, 108);
+  fontInit(&font_small, 54);
 
-  fontUpdate(&scene_player_1, "0", POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
-  fontUpdate(&scene_player_2, "0", POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
+  fontUpdate(&scene_player_1, font, "0", POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
+  fontUpdate(&scene_player_2, font, "0", POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
 }
 
 void
@@ -57,7 +62,6 @@ gameUpdate(void)
 void
 gameRender(void)
 {
-  // set color to white
   SDL_SetRenderDrawColor(game.renderer, 0, 0, 0, 255);
 
   // clears the screen
@@ -78,6 +82,8 @@ gameClean(void)
   fontClean(&scene_player_1);
   fontClean(&scene_player_2);
   fontClean(&paused_text);
+  fontClean(&winner_text_1);
+  fontClean(&winner_text_2);
 
   SDL_DestroyRenderer(game.renderer);
   SDL_DestroyWindow(game.window);
@@ -91,9 +97,8 @@ gameInputAction(SDL_Event event)
     game.wind_h = event.window.data2;
   }
 
-  if (event.key.type == SDL_KEYDOWN &&
-      event.key.keysym.scancode == SDL_SCANCODE_P) {
-    if (!paused) {
+  if (event.key.type == SDL_KEYDOWN) {
+    if (event.key.keysym.scancode == SDL_SCANCODE_P && !paused) {
       paused = 1;
     } else {
       paused = 0;
@@ -104,11 +109,41 @@ gameInputAction(SDL_Event event)
 void
 gamePauseRender(void)
 {
-  fontUpdate(&paused_text,
-             "Paused",
-             (game.wind_w - paused_text.messageRect.w) / 2,
-             (game.wind_h - paused_text.messageRect.h) / 2);
+  SDL_SetRenderDrawColor(game.renderer, 255, 255, 255, 255);
+  fontUpdate(&paused_text, font_small, "Paused", 0.02, 0.02);
   fontRender(&paused_text);
+}
+
+int
+gameCheckWinner(void)
+{
+  if (score_p_1 == 10) {
+    return 1;
+  }
+  if (score_p_2 == 10) {
+    return 2;
+  } else {
+    return 0;
+  }
+}
+
+void
+gameWinnerScreenRender(int player_num)
+{
+  SDL_SetRenderDrawColor(game.renderer, 0, 0, 0, 255);
+  SDL_RenderClear(game.renderer);
+  SDL_SetRenderDrawColor(game.renderer, 255, 255, 255, 255);
+
+  char text[15];
+  sprintf(text, "Player %d won!", player_num);
+
+  fontUpdate(&winner_text_1, font, text, 0.5, 0.3);
+  fontUpdate(&winner_text_2, font_small, "Press 'r' to restart", 0.5, 0.75);
+  SDL_SetRenderDrawColor(game.renderer, 255, 255, 255, 255);
+  fontRender(&winner_text_1);
+  fontRender(&winner_text_2);
+
+  SDL_RenderPresent(game.renderer);
 }
 
 void
@@ -116,7 +151,7 @@ gameAddScorePlayer1(void)
 {
   char num[12];
   sprintf(num, "%d", ++score_p_1);
-  fontUpdate(&scene_player_1, num, POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
+  fontUpdate(&scene_player_1, font, num, POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
 }
 
 void
@@ -124,5 +159,14 @@ gameAddScorePlayer2(void)
 {
   char num[12];
   sprintf(num, "%d", ++score_p_2);
-  fontUpdate(&scene_player_2, num, POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
+  fontUpdate(&scene_player_2, font, num, POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
+}
+
+void
+gameResetScores(void)
+{
+  score_p_1 = 0;
+  score_p_2 = 0;
+  fontUpdate(&scene_player_1, font, "0", POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
+  fontUpdate(&scene_player_2, font, "0", POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
 }

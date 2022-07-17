@@ -13,6 +13,7 @@ typedef struct Game {
 
 extern Game game;
 extern int paused;
+extern int winner;
 
 void gameInit(void);
 void gameUpdate(void);
@@ -20,9 +21,13 @@ void gameRender(void);
 void gameClean(void);
 void gameInputAction(SDL_Event event);
 
+int gameCheckWinner(void);
+void gameWinnerScreenRender(int player_num);
+
 void gamePauseRender(void);
 void gameAddScorePlayer1(void);
 void gameAddScorePlayer2(void);
+void gameResetScores(void);
 
 
 #endif

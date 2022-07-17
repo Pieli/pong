@@ -23,6 +23,8 @@ init(void);
 void
 clean(void);
 void
+restart(void);
+void
 render(void);
 void
 logicWalls(void);
@@ -34,6 +36,8 @@ void
 handleEvent(SDL_Event event);
 void
 update(void);
+void
+calculateAngle(Player player);
 
 Player leftPlayer;
 Player rightPlayer;
@@ -75,6 +79,12 @@ main(int argc, char* args[])
 
     if (paused) {
       render();
+      continue;
+    }
+
+    if (gameCheckWinner() != 0) {
+      winner = 1;
+      gameWinnerScreenRender(gameCheckWinner());
       continue;
     }
 
@@ -273,9 +283,38 @@ render(void)
 }
 
 void
+restart(void)
+{
+  hold_s = 0;
+  hold_w = 0;
+  hold_down = 0;
+  hold_up = 0;
+
+  gameResetScores();
+
+  playerInit(&leftPlayer);
+  playerInit(&rightPlayer);
+
+  leftPlayer.drect.x = 30;
+  leftPlayer.drect.y = 500;
+  rightPlayer.drect.x = 1520;
+  rightPlayer.drect.y = 500;
+
+  ballInit();
+}
+
+void
 handleEvent(SDL_Event event)
 {
   gameInputAction(event);
+
+  if (event.key.keysym.scancode == SDL_SCANCODE_R && winner) {
+    winner = 0;
+    restart();
+  }
+
+  if (paused || winner)
+    return;
 
   time_t timer;
   char buffer[26];
