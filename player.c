@@ -6,20 +6,23 @@
 #include "game.h"
 #include "player.h"
 
-const int SPEED = 3;
-
 Player player;
 
 void
 playerInit(Player* player)
 {
   // inital texture
-  player->drect.w = game.wind_w * 0.032;
+  player->drect.w = game.wind_w * 0.02;
   player->drect.h = game.wind_h * 0.2;
 
   // positioning
   player->drect.x = (game.wind_w - player->drect.w) / 2;
   player->drect.y = (game.wind_h - player->drect.h) / 2;
+
+  if (game.wind_w > 1000)
+    player->speed = 15;
+  else
+    player->speed = 10;
 }
 
 void

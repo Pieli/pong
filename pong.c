@@ -42,8 +42,6 @@ calculateAngle(Player player);
 Player leftPlayer;
 Player rightPlayer;
 
-const int PLAYER_SPEED = 15;
-
 unsigned int hold_w = 0;
 unsigned int hold_s = 0;
 unsigned int hold_up = 0;
@@ -57,14 +55,10 @@ main(int argc, char* args[])
 
   init();
 
-  // TODO game finish after 10
-  // TODO test on ubuntu
-  // TODO test resize
-
   // inital positioning
-  leftPlayer.drect.x = game.wind_w * 0.018;
+  leftPlayer.drect.x = game.wind_w * 0.02;
   leftPlayer.drect.y = (game.wind_h - leftPlayer.drect.h) / 2.0;
-  rightPlayer.drect.x = game.wind_w * 0.95;
+  rightPlayer.drect.x = game.wind_w * 0.96;
   rightPlayer.drect.y = (game.wind_h - rightPlayer.drect.h) / 2.0;
 
   SDL_Event event;
@@ -174,6 +168,7 @@ logicPlayer(void)
           ball.drect.y = rightPlayer.drect.y - ball.drect.h;
         else
           ball.drect.y = rightPlayer.drect.y + rightPlayer.drect.h;
+        ball.drect.x -= rightPlayer.speed;
       }
       calculateAngle(rightPlayer);
       return;
@@ -190,6 +185,7 @@ logicPlayer(void)
         } else {
           ball.drect.y = leftPlayer.drect.y + leftPlayer.drect.h;
         }
+        ball.drect.x += leftPlayer.speed;
       }
       calculateAngle(leftPlayer);
       return;
@@ -368,8 +364,8 @@ handleEvent(SDL_Event event)
       break;
   }
 
-  leftPlayer.drect.y -= hold_w * PLAYER_SPEED;
-  leftPlayer.drect.y += hold_s * PLAYER_SPEED;
-  rightPlayer.drect.y -= hold_up * PLAYER_SPEED;
-  rightPlayer.drect.y += hold_down * PLAYER_SPEED;
+  leftPlayer.drect.y -= hold_w * leftPlayer.speed;
+  leftPlayer.drect.y += hold_s * leftPlayer.speed;
+  rightPlayer.drect.y -= hold_up * rightPlayer.speed;
+  rightPlayer.drect.y += hold_down * rightPlayer.speed;
 }

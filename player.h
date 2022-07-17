@@ -7,6 +7,7 @@
 typedef struct Player
 {
   SDL_Rect drect;
+  double speed;
 } Player;
 
 extern Player player;

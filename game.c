@@ -52,8 +52,14 @@ gameInit(void)
     game.window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
 
   lineInit();
-  fontInit(&font, 108);
-  fontInit(&font_small, 54);
+
+  if (game.wind_w < 100) {
+    fontInit(&font, 72);
+    fontInit(&font_small, 50);
+  } else {
+    fontInit(&font, 108);
+    fontInit(&font_small, 54);
+  }
 
   fontUpdate(&scene_player_1, font, "0", POS_SCORE_P_1_X, POS_SCORE_P_1_Y);
   fontUpdate(&scene_player_2, font, "0", POS_SCORE_P_2_X, POS_SCORE_P_2_Y);
