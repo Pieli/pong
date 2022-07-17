@@ -9,27 +9,32 @@
 #include "game.h"
 #include "line.h"
 
-const int GAP_SIZE = 20;
-const int LINE_W = 10;
-const int LINE_H = 80;
-
 SDL_Rect* rectangles;
+
 unsigned int number_of_spaces = 0;
 
 void
 lineInit(void)
 {
+
+  double GAP_SIZE = game.wind_h * 0.0125;
+  double LINE_W = game.wind_h * 0.006;
+  double LINE_H = game.wind_w * 0.04;
+
   double gap = GAP_SIZE;
 
   double missing_space = game.wind_h - gap - LINE_H;
   number_of_spaces = (int)(missing_space / (gap + LINE_H));
-  double epsilon = (missing_space / (gap + LINE_H)) - number_of_spaces;
+  SDL_Log("Number of spaces %d", number_of_spaces);
+  double epsilon = ((missing_space) / (gap + LINE_H)) - number_of_spaces;
+
+  SDL_Log("epsilon %f", epsilon);
 
   if (epsilon > 0.5)
-    gap += epsilon / number_of_spaces;
+    gap += (epsilon * (LINE_H + gap)) / (number_of_spaces + 1);
 
   else
-    gap -= epsilon / number_of_spaces;
+    gap -= (epsilon / (number_of_spaces + 1));
 
   rectangles = (SDL_Rect*)malloc((number_of_spaces + 2) * sizeof(SDL_Rect));
 
