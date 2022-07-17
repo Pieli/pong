@@ -9,23 +9,23 @@
 
 Ball ball;
 
-const double BALL_START_X = 787.5;
-const double BALL_START_Y = 487.5;
-
 void
 ballInit(void)
 {
+  double ball_start_x = (game.wind_w - ball.drect.w) / 2.0;
+  double ball_start_y = (game.wind_h - ball.drect.h) / 2.0;
+
   ball.speed = 20;
   ball.x_direction = 1.0;
   ball.y_direction = 0;
 
   // size
-  ball.drect.w = 25;
-  ball.drect.h = 25;
+  ball.drect.w = game.wind_h * 0.025;
+  ball.drect.h = ball.drect.w;
 
   // positioning
-  ball.drect.x = BALL_START_X;
-  ball.drect.y = BALL_START_Y;
+  ball.drect.x = ball_start_x;
+  ball.drect.y = ball_start_y;
 }
 
 void
@@ -52,9 +52,11 @@ ballReset(int direction)
 {
   // if direction == 0 -> direction to player right
   // if direction == -1 -> direction to player left
+  double ball_start_x = (game.wind_w - ball.drect.w) / 2.0;
+  double ball_start_y = (game.wind_h - ball.drect.h) / 2.0;
 
-  ball.drect.x = BALL_START_X;
-  ball.drect.y = BALL_START_Y;
+  ball.drect.x = ball_start_x;
+  ball.drect.y = ball_start_y;
 
   if (direction > 0) {
     ball.x_direction = 1;
