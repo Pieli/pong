@@ -1,30 +1,37 @@
 # simple Makefile for compiling small SDL projects
-
-# set the compiler
+#
+# Compiler and flags
 CC := gcc
+CFLAGS := -ggdb3 -O0 --std=c99 -Wall `sdl2-config --cflags`
+LDFLAGS := `sdl2-config --libs` -lSDL2_ttf -lm
 
-# set the compiler flags
-CFLAGS := `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_ttf -lm
-# add header files here
-HDRS :=
-
-# add source files here
+# Source files and object files
 SRCS := pong.c game.c ball.c player.c font.c line.c
-
-# generate names of object files
 OBJS := $(SRCS:.c=.o)
 
-# name of executable
+# Header files
+HDRS := game.h ball.h player.h font.h line.h
+
+# Executable name
 EXEC := pong
 
-# default recipe
+# Default target
 all: $(EXEC)
 
-# recipe to clean the workspace
+# Linking the final executable
+$(EXEC): $(OBJS)
+	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS)
+
+# Pattern rule for compiling source files into object files
+%.o: %.c $(HDRS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Clean up build artifacts
 clean:
 	rm -f $(EXEC) $(OBJS)
 
-run: ./pong
-	make && ./pong
+# Run the executable (if build succeeds)
+run: $(EXEC)
+	./$(EXEC)
 
-.PHONY: all clean
+.PHONY: all clean run
