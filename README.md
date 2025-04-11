@@ -1,5 +1,10 @@
-# Classic Pong
-Pong like in the arcade days
+# Classic Pong 👾 
+Pong, like in the arcade days.  
+It's a two-player game.   
+No AI agent yet. :)  
+
+**Controls for Player 1**: <kbd>W</kbd> (up) + <kbd>S</kbd> (down)  
+**Controls for Player 2**: <kbd>↑</kbd> (up) + <kbd>↓</kbd> (down)  
 
 ![screenshot](screenshot.jpg)
 
@@ -27,10 +32,10 @@ git clone https://github.com/Pieli/pong.git
 ```
 Change directory and compile:
 ```
-cd classic_pong && make
+cd pong && make
 ```
 
-# Run animation
+# Running the Game ✨
 change permission:
 ```
 chmod +x pong
@@ -39,3 +44,4 @@ run:
 ```
 ./pong
 ```
+
